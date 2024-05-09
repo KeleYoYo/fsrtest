@@ -3,7 +3,8 @@
 
 <template>
   <div id="decode-app">
-    <a-button type="primary">项目启动</a-button>
+<!--    <a-button type="primary">项目启动</a-button>-->
+    <RouterView></RouterView>
   </div>
 </template>
 
@@ -20,6 +21,6 @@ body,html,#app{
 #decode-app{
   width: 100%;
   height: 100%;
-  background-color: yellow;
+  //background-color: yellow;
 }
 </style>
