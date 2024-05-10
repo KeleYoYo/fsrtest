@@ -17,6 +17,8 @@ declare module 'vue' {
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Table: typeof import('./src/components/table/Table.vue')['default']
+    TableTwo: typeof import('./src/components/table/TableTwo.vue')['default']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
     VXETable: typeof import('./src/components/table/VXETable.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']

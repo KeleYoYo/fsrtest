@@ -2,39 +2,33 @@
 import {ref} from "vue";
 import {tableConfig} from "@/views/tableTest/tableConfig";
 import useTableList from "@/hooks/useTableList";
+import Table from "@/components/table/Table.vue";
+import TableTwo from "@/components/table/TableTwo.vue";
 const re  = ref(null)
-const {GridOptions} =useTableList(tableConfig)
-console.log("GridOptions",GridOptions)
+const {tableState} =useTableList(tableConfig)
+console.log("GridOptions",tableState)
 </script>
 
 <template>
   <div style="height: 100%">
-    <VxeGrid v-bind="GridOptions" ref="re">
-      <template #date="{row}">
-        {{row.date}} +111
-      </template>
-    </VxeGrid>
+    <div style="height: 50%">
+      <Table :tableState="tableState">
+        <template #date="{row}">
+          {{row.date}} +111
+        </template>
+      </Table>
+    </div>
+    <div style="height: 50%">
+      <TableTwo :tableState="tableState">
+        <template #date="{row}">
+          {{row.date}} +111
+        </template>
+      </TableTwo>
+    </div>
   </div>
 </template>
 
 <style lang="less" scoped>
-//表头样式
-:deep(.vxe-table--header){
-  background-color: yellow;
-}
-//行样式
-:deep(.vxe-body--row){
-  background-color: green;
-  color: white;
-  font-weight: bold;
-  border-top: 1px solid red;
-  margin-top: 15px;
-}
-//鼠标移入行样式
-:deep(.vxe-body--row.row--hover){
-  background-color: black;
-  color: white;
-  font-weight: bold;
-}
+
 
 </style>

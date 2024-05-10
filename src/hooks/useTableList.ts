@@ -1,12 +1,14 @@
 import {onBeforeMount, onMounted, reactive, ref, watch} from "vue";
 
 export default function useTableList(tableConfig:{}){
-    const GridOptions = ref({})
+    const tableState = reactive({
+        gridOptions:{}
+    })
 
     // 加载数据
     function loadData(searchParams={}){
         setTimeout(()=>{
-            GridOptions.value.data = [
+            tableState.gridOptions.data = [
                 {
                     name: 'John Brown',
                     age: 18,
@@ -31,12 +33,12 @@ export default function useTableList(tableConfig:{}){
 
     // 初始化表格
     function initTable(){
-        GridOptions.value = tableConfig
+        tableState.gridOptions= tableConfig
         loadData()
     }
     tableConfig && initTable()
     return{
-        GridOptions,
+        tableState,
         loadData,
     }
 }
