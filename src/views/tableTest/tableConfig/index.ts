@@ -1,5 +1,6 @@
 
 export const tableConfig = {
+    border:'none',
     columns:[
         {
             title: '姓名',
@@ -11,7 +12,8 @@ export const tableConfig = {
             title: '年龄',
             width: 80,
             align: 'center',
-            field:'age'
+            field:'age',
+            sortable:true,
         },
         {
             title: '地址',

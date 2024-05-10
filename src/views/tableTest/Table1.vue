@@ -17,6 +17,24 @@ console.log("GridOptions",GridOptions)
   </div>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
+//表头样式
+:deep(.vxe-table--header){
+  background-color: yellow;
+}
+//行样式
+:deep(.vxe-body--row){
+  background-color: green;
+  color: white;
+  font-weight: bold;
+  border-top: 1px solid red;
+  margin-top: 15px;
+}
+//鼠标移入行样式
+:deep(.vxe-body--row.row--hover){
+  background-color: black;
+  color: white;
+  font-weight: bold;
+}
 
 </style>
