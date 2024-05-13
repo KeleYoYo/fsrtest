@@ -1,10 +1,11 @@
 <script setup lang="ts">
 
+import DrawPanel from "@/components/DrawPannel.vue";
 </script>
 
 <template>
   <div>
-    绘画板
+    <DrawPanel></DrawPanel>
   </div>
 </template>
 

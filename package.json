@@ -20,6 +20,7 @@
     "less-loader": "^12.2.0",
     "mitt": "^3.0.1",
     "pinia": "^2.0.32",
+    "tiny-whiteboard": "^0.1.12",
     "vue": "^3.4.19",
     "vue-router": "^4.1.6",
     "vuedraggable": "^4.1.0",

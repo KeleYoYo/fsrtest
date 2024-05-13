@@ -14,6 +14,7 @@ declare module 'vue' {
     CommonForm: typeof import('./src/components/CommonForm.vue')['default']
     CommonTable: typeof import('./src/components/table/CommonTable.vue')['default']
     Drag: typeof import('./src/components/Test/Drag.vue')['default']
+    DrawPannel: typeof import('./src/components/DrawPannel.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']

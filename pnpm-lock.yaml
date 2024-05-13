@@ -32,6 +32,9 @@ dependencies:
   pinia:
     specifier: ^2.0.32
     version: 2.1.7(typescript@5.4.5)(vue@3.4.27)
+  tiny-whiteboard:
+    specifier: ^0.1.12
+    version: 0.1.12
   vue:
     specifier: ^3.4.19
     version: 3.4.27(typescript@5.4.5)
@@ -1773,6 +1776,10 @@ packages:
       es5-ext: 0.10.64
     dev: false
 
+  /eventemitter3@4.0.7:
+    resolution: { integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw== }
+    dev: false
+
   /execa@8.0.1:
     resolution: {integrity: sha512-VyhnebXciFV2DESc+p6B+y0LjSm0krU4OgJN44qFAhBY0TJ+1V61tYD2+wHusZ6F9n5K+vl8k0sTy7PEfV4qpg==}
     engines: {node: '>=16.17'}
@@ -2727,6 +2734,13 @@ packages:
     resolution: {integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==}
     dev: false
 
+  /tiny-whiteboard@0.1.12:
+    resolution: { integrity: sha512-JBg6i27tWqaXdFx3FIOJUJBRUGQB9H40m374qRYDzcB0lY1eNEKfZwBkfM6in2ULhpOnoDDuhNT7pLuLGVwwoA== }
+    dependencies:
+      eventemitter3: 4.0.7
+      uuid: 9.0.1
+    dev: false
+
   /to-fast-properties@2.0.0:
     resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}
     engines: {node: '>=4'}
@@ -2825,6 +2839,11 @@ packages:
     dependencies:
       tslib: 2.6.2
     dev: true
+
+  /uuid@9.0.1:
+    resolution: { integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA== }
+    hasBin: true
+    dev: false
 
   /vite-hot-client@0.2.3(vite@5.2.11):
     resolution: {integrity: sha512-rOGAV7rUlUHX89fP2p2v0A2WWvV3QMX2UYq0fRqsWSvFvev4atHWqjwGoKaZT1VTKyLGk533ecu3eyd0o59CAg==}
