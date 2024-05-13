@@ -1,16 +1,20 @@
 <template>
   <div class="draw">
-    <canvas id="draw-panel">
+    <canvas :style="{'--bg':panelBgColor}" id="draw-panel">
     </canvas>
     <div class="tools">
       <div class="colors">
 
       </div>
-      <div class="colors-panel">
-        1
+      <div :class=" `colors-panel ${colorPanel}`">
+        <li @click="handlePencilColor(color)" :style="{'--color':color.value}" class="color-item"
+            v-for="color in colors">
+        </li>
       </div>
       <div class="tool-items">
-        2
+        <li @click="tool.clickFn" v-for="tool in toolItem">
+          {{ tool.label }}
+        </li>
       </div>
     </div>
   </div>
@@ -19,6 +23,11 @@
 <script setup>
 // 初始化canvas画板
 import {onMounted, ref, watchEffect} from "vue";
+import {message} from "ant-design-vue";
+
+const colorPanel = ref("hide")
+// 画板颜色
+const panelBgColor = ref("#0d0e0d")
 
 const canvasCTX = ref(null)
 var startPoint = {
@@ -28,6 +37,82 @@ var startPoint = {
 var action = "pencil"
 const downloadLink = ref(null)
 const pencilColor = ref("#0d0e0d")
+const colors = ref([
+  {label: '红色', value: '#FF0000'},
+  {label: '蓝色', value: '#1b3c8d'},
+  {label: '黄色', value: '#eac42a'},
+  {label: '绿色', value: '#0cee2a'},
+  {label: '黑色', value: '#0d0e0d'}
+])
+// 选择画笔颜色
+const handlePencilColor = (coloritem) => {
+  pencilColor.value = coloritem.value
+}
+
+
+// 点击颜色板
+const colorClick = () => {
+  if (action == 'bgColor') {
+    colorPanel.value = 'hide'
+  }
+  if (colorPanel.value === "show") {
+    colorPanel.value = 'hide'
+  } else {
+    colorPanel.value = 'show'
+  }
+  action = 'pencilColor'
+  colors.value = [
+    {label: '红色', value: '#FF0000'},
+    {label: '蓝色', value: '#1b3c8d'},
+    {label: '黄色', value: '#eac42a'},
+    {label: '绿色', value: '#0cee2a'},
+    {label: '黑色', value: '#0d0e0d'}
+  ]
+}
+// 点击画笔
+const pencilClick = () => {
+  console.log("pencilClick", action)
+}
+const cleanCanvas = () => {
+  let canvas = document.querySelector("#draw-panel")
+  // console.log("canvasCTX", canvasCTX)
+  canvasCTX.value.fillStyle = panelBgColor.value;
+  canvasCTX.value.fillRect(0, 0, canvas.width, canvas.height);
+}
+// 下载
+const download = () => {
+  try {
+    downloadLink.value.click()
+  } catch (e) {
+    message.error("下载失败了")
+  }
+}
+const panBgcolor = () => {
+  if (action == 'pencilColor') {
+    colorPanel.value = 'hide'
+  }
+  if (colorPanel.value === "show") {
+    colorPanel.value = 'hide'
+  } else {
+    colorPanel.value = 'show'
+  }
+  action = 'bgColor'
+  colors.value = [
+    {label: 'x', value: '#e3c0c0'},
+    {label: 'x', value: '#eee3e8'},
+    {label: 'x', value: '#d9cc99'},
+    {label: 'x', value: '#5aef6e'},
+    {label: 'x', value: '#0d0e0d'}
+  ]
+}
+const toolItem = ref([
+  {label: "画笔颜色", action: "colorPike", clickFn: colorClick},
+  {label: "画笔", action: "pencil", clickFn: pencilClick},
+  {label: "橡皮擦", action: "eraser", clickFn: null},
+  {label: "清除", action: "delete", clickFn: cleanCanvas},
+  {label: "下载", action: "download", clickFn: download},
+  {label: "画板颜色", action: "colorPike", clickFn: panBgcolor},
+])
 
 
 const initCanvas = () => {
