@@ -1,6 +1,6 @@
 <template>
-  <div class="draw">
-    <canvas :style="{'--bg':panelBgColor}" id="draw-panel">
+  <div :style="{'--bg':panelBgColor}" class="draw">
+    <canvas id="draw-panel">
     </canvas>
     <div class="tools">
       <div class="colors">
@@ -27,7 +27,7 @@ import {message} from "ant-design-vue";
 
 const colorPanel = ref("hide")
 // 画板颜色
-const panelBgColor = ref("#0d0e0d")
+const panelBgColor = ref("#fff")
 
 const canvasCTX = ref(null)
 var startPoint = {
@@ -46,7 +46,13 @@ const colors = ref([
 ])
 // 选择画笔颜色
 const handlePencilColor = (coloritem) => {
-  pencilColor.value = coloritem.value
+  if (action == 'bgColor') {
+    panelBgColor.value = coloritem.value
+  }
+  if (action == 'pencilColor') {
+    pencilColor.value = coloritem.value
+    console.log("画笔颜色", pencilColor.value)
+  }
 }
 
 
@@ -71,7 +77,7 @@ const colorClick = () => {
 }
 // 点击画笔
 const pencilClick = () => {
-  console.log("pencilClick", action)
+  action = 'pencil'
 }
 const cleanCanvas = () => {
   let canvas = document.querySelector("#draw-panel")
@@ -142,6 +148,7 @@ const drawLine = ({startX, startY, endX, endY}) => {
   canvasCTX.value.beginPath();
   //线宽
   canvasCTX.value.lineWidth = 2;
+  console.log("线条颜色", pencilColor.value)
   // 线颜色
   canvasCTX.value.strokeStyle = pencilColor.value;
   // 指定如何绘制每一条线段末端的属性,round-线段末端以圆形结束。
