@@ -5,9 +5,24 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      redirect: '/formTest1'
+        name: 'default',
+        redirect: '/home'
     },
+      {
+          path: '/home',
+          name: 'home',
+          component: () => import("@/views/home.vue")
+      },
+      {
+          path: '/article',
+          name: 'article',
+          component: () => import("@/views/article.vue")
+      },
+      {
+          path: '/article',
+          name: 'article',
+          component: () => import("@/views/article.vue")
+      },
     {
       path: '/about',
       name: 'about',

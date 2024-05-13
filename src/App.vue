@@ -4,7 +4,10 @@
 <template>
   <div id="decode-app">
 <!--    <a-button type="primary">项目启动</a-button>-->
-    <RouterView></RouterView>
+    <TabBar></TabBar>
+    <div class="main">
+      <RouterView></RouterView>
+    </div>
   </div>
 </template>
 
@@ -22,5 +25,9 @@ body,html,#app{
   width: 100%;
   height: 100%;
   //background-color: yellow;
+  .main {
+    height: 100%;
+    padding: 120px 20px 0 20px;
+  }
 }
 </style>
