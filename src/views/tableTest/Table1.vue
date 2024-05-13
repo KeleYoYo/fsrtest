@@ -2,8 +2,8 @@
 import {ref} from "vue";
 import {tableConfig} from "@/views/tableTest/tableConfig";
 import useTableList from "@/hooks/useTableList";
-import Table from "@/components/table/Table.vue";
-import TableTwo from "@/components/table/TableTwo.vue";
+import Drag from "@/components/Test/Drag.vue";
+
 const re  = ref(null)
 const {tableState} =useTableList(tableConfig)
 console.log("GridOptions",tableState)
@@ -11,20 +11,21 @@ console.log("GridOptions",tableState)
 
 <template>
   <div style="height: 100%">
-    <div style="height: 50%">
-      <Table :tableState="tableState">
-        <template #date="{row}">
-          {{row.date}} +111
-        </template>
-      </Table>
-    </div>
-    <div style="height: 50%">
-      <TableTwo :tableState="tableState">
-        <template #date="{row}">
-          {{row.date}} +111
-        </template>
-      </TableTwo>
-    </div>
+    <Drag></Drag>
+    <!--    <div style="height: 50%">-->
+    <!--      <Table :tableState="tableState">-->
+    <!--        <template #date="{row}">-->
+    <!--          {{row.date}} +111-->
+    <!--        </template>-->
+    <!--      </Table>-->
+    <!--    </div>-->
+    <!--    <div style="height: 50%">-->
+    <!--      <TableTwo :tableState="tableState">-->
+    <!--        <template #date="{row}">-->
+    <!--          {{row.date}} +111-->
+    <!--        </template>-->
+    <!--      </TableTwo>-->
+    <!--    </div>-->
   </div>
 </template>
 
