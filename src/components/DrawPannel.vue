@@ -1,6 +1,6 @@
 <template>
   <div :style="{'--bg':panelBgColor}" class="draw">
-    <canvas id="draw-panel">
+    <canvas :class="`${isEraser?'eraser':''}`" id="draw-panel">
     </canvas>
     <div class="tools">
       <div class="colors">
@@ -12,7 +12,7 @@
         </li>
       </div>
       <div class="tool-items">
-        <li @click="tool.clickFn" v-for="tool in toolItem">
+        <li :class="`${currentToolIdx == idx ? 'active' : ''}`" @click="tool.clickFn" v-for="(tool,idx) in toolItem">
           {{ tool.label }}
         </li>
       </div>
@@ -29,12 +29,16 @@ const colorPanel = ref("hide")
 // 画板颜色
 const panelBgColor = ref("#fff")
 
+// 默认选中画笔
+const currentToolIdx = ref(1)
+
 const canvasCTX = ref(null)
 var startPoint = {
   x: -999,
   y: -999
 }
 var action = "pencil"
+const isEraser = ref(false);
 const downloadLink = ref(null)
 const pencilColor = ref("#0d0e0d")
 const colors = ref([
@@ -58,6 +62,7 @@ const handlePencilColor = (coloritem) => {
 
 // 点击颜色板
 const colorClick = () => {
+  currentToolIdx.value = 0
   if (action == 'bgColor') {
     colorPanel.value = 'hide'
   }
@@ -77,16 +82,33 @@ const colorClick = () => {
 }
 // 点击画笔
 const pencilClick = () => {
+  currentToolIdx.value = 1
   action = 'pencil'
+  isEraser.value = false
 }
 const cleanCanvas = () => {
+  currentToolIdx.value = 3
   let canvas = document.querySelector("#draw-panel")
   // console.log("canvasCTX", canvasCTX)
   canvasCTX.value.fillStyle = panelBgColor.value;
   canvasCTX.value.fillRect(0, 0, canvas.width, canvas.height);
 }
+/**
+ * 表设计：
+ * 1.user表 - user_id,user_name,user_pwd,user_phone,user_address,user_age,user_sex,user_email
+ * 2.painting_records(绘画记录表),painting_id,painting_question(老师提问),painting_reply(学生回复),painting_remark(老师给出评语)
+ * painting_status(绘画状态，1是绘画完成，完成作者自评。2是完成老师提问，3是学生回复完成，4是绘画测评结束，老师给出评语)
+ * painting_img,painting_time,author_id,self_assessment(作者自评)
+ * 3.consultation（咨询表）,consultation_id,consultation_question(问题内容),consultation_time（咨询时间）,author_id(咨询人id)
+ * reply(回复内容)，replier_id(回复人id),consultation_status(咨询状态，1是咨询完成，2是咨询回复完成)
+ * 4.article（文章表）,article_id,article_title,article_content,article_time,category_id(文章分类id)
+ * article_author_id(作者id),article_status(文章状态，1是文章完成，2是文章审核中，3是文章审核通过，4是文章审核不通过)
+ * 5.category（分类表）,category_id,category_name
+ * */
+
 // 下载
 const download = () => {
+  currentToolIdx.value = 4
   try {
     downloadLink.value.click()
   } catch (e) {
@@ -94,6 +116,7 @@ const download = () => {
   }
 }
 const panBgcolor = () => {
+  currentToolIdx.value = 5
   if (action == 'pencilColor') {
     colorPanel.value = 'hide'
   }
@@ -111,10 +134,17 @@ const panBgcolor = () => {
     {label: 'x', value: '#0d0e0d'}
   ]
 }
+
+
+const eraserFn = () => {
+  currentToolIdx.value = 2
+  action = 'eraser'
+  isEraser.value = true
+}
 const toolItem = ref([
   {label: "画笔颜色", action: "colorPike", clickFn: colorClick},
   {label: "画笔", action: "pencil", clickFn: pencilClick},
-  {label: "橡皮擦", action: "eraser", clickFn: null},
+  {label: "橡皮擦", action: "eraser", clickFn: eraserFn},
   {label: "清除", action: "delete", clickFn: cleanCanvas},
   {label: "下载", action: "download", clickFn: download},
   {label: "画板颜色", action: "colorPike", clickFn: panBgcolor},
@@ -178,6 +208,7 @@ const watchCanvas = (ctx) => {
     const endY = event.offsetY;
 
     if (action === 'pencil' && startPoint.x >= 0) {
+      console.log("画笔")
       drawLine({
         startX: startPoint.x,
         startY: startPoint.y,
@@ -190,7 +221,8 @@ const watchCanvas = (ctx) => {
       }
     }
     if (action === 'eraser' && startPoint.x >= 0) {
-      canvasCTX.current.clearRect(endX - 5, endY - 5, 25, 25);
+      console.log("橡皮擦")
+      canvasCTX.value.clearRect(endX - 5, endY - 5, 25, 25);
     }
   });
   // 监听鼠标抬起， 结束绘制
@@ -307,7 +339,12 @@ onMounted(() => {
   align-items: center;
   position: absolute;
   z-index: 99;
+  font-weight: bold;
 
+}
+
+.tool-items .active {
+  color: #17ec1b;
 }
 
 li {
