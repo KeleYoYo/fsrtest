@@ -15,8 +15,15 @@ export function $firstCommit(data = {}) {
 export function $getMyPaintingList(authorId) {
     console.log("$getMyPaintingList", authorId)
     return service({
-        // url: `/api/u8login`,
         url: `/painting/list?authorId=${authorId}`,
+        method: 'get',
+    })
+}
+
+// 获取绘画列表
+export function $getPaintingList(status) {
+    return service({
+        url: `/painting/alldetail?paintingStatus=${status}`,
         method: 'get',
     })
 }
