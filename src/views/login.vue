@@ -34,7 +34,7 @@ import registerFormConfig from './formConfig/registerForm.ts'
 import {ref, toRaw} from "vue";
 import {message} from "ant-design-vue";
 import useForm from "@/hooks/useForm";
-import {$userLogin} from "@/api/userApi.ts";
+import {$register, $userLogin} from "@/api/userApi.ts";
 
 const formType = ref('login')
 
@@ -46,11 +46,11 @@ const registerFormRef = ref(null)
 const submit = () => {
   if (formType.value == 'login') {
     loginFormRef.value.onValidate(() => {
-      console.log("校验成功", LoginForm.value.formState)
       $userLogin(toRaw(LoginForm.value.formState)).then(res => {
         console.log("登录", res)
         if (res.code === 200) {
           message.success("登录成功")
+          localStorage.setItem("userInfo", res.data)
         } else {
           message.error(res.message)
         }
@@ -61,6 +61,13 @@ const submit = () => {
   } else {
     registerFormRef.value.onValidate(() => {
       console.log("校验成功", RegisterForm.value.formState)
+      $register(toRaw(RegisterForm.value.formState)).then(res => {
+        if (res.code === 200) {
+          message.success("注册成功，快去登录吧")
+        } else {
+          message.error(res.message)
+        }
+      })
     }, () => {
       message.error("注册请认真填写表单内容")
     })

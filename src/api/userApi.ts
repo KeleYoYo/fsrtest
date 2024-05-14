@@ -12,22 +12,10 @@ export function $userLogin(data = {}) {
 }
 
 export function $register(data = {}) {
-    console.log("$register", data)
     return service({
-        url: `/api/register`,
+        url: `/register`,
         method: 'post',
         data
     })
 }
-
-export function $getToken(data = {}) {
-    console.log("$getToken", data)
-    return service({
-        // url: `/api/token`,
-        url: `/token/`,
-        method: 'post',
-        data
-    })
-}
-
 
