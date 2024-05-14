@@ -75,6 +75,10 @@ defineExpose({
           <!--          文本域类型-->
           <a-textarea :disabled="item.disabled" v-if="item.type=='textarea'"
                       v-model:value="props.formConfig.formState[item.filed]" placeholder="请输入" :rows="6"/>
+
+          <!--          密码框类型-->
+          <a-input-password v-model:value="props.formConfig.formState[item.filed]"
+                            :disabled="item.disabled" v-if="item.type=='password'" placeholder="请输入"/>
         </a-form-item>
 
         <a-form-item :wrapper-col="buttonWraper()">

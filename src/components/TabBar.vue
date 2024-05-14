@@ -6,6 +6,10 @@ const router = useRouter()
 
 const menus = ref([
   {
+    title: '登录注册',
+    path: 'login'
+  },
+  {
     title: '文章',
     path: 'article'
   },
