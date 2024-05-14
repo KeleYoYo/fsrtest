@@ -31,9 +31,10 @@
 import CommonForm from "@/components/CommonForm.vue";
 import loginForm from './formConfig/loginForm.ts'
 import registerFormConfig from './formConfig/registerForm.ts'
-import {ref} from "vue";
+import {ref, toRaw} from "vue";
 import {message} from "ant-design-vue";
 import useForm from "@/hooks/useForm";
+import {$userLogin} from "@/api/userApi.ts";
 
 const formType = ref('login')
 
@@ -46,14 +47,20 @@ const submit = () => {
   if (formType.value == 'login') {
     loginFormRef.value.onValidate(() => {
       console.log("校验成功", LoginForm.value.formState)
-      console.log("校验成功", formType.value)
+      $userLogin(toRaw(LoginForm.value.formState)).then(res => {
+        console.log("登录", res)
+        if (res.code === 200) {
+          message.success("登录成功")
+        } else {
+          message.error(res.message)
+        }
+      })
     }, () => {
       message.error("登录请认真填写表单内容")
     })
   } else {
     registerFormRef.value.onValidate(() => {
       console.log("校验成功", RegisterForm.value.formState)
-      console.log("校验成功", formType.value)
     }, () => {
       message.error("注册请认真填写表单内容")
     })
