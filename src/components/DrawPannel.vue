@@ -35,14 +35,17 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 // 初始化canvas画板
 import drawconfig from './formConfig/drawconfig.ts'
 import {onMounted, ref, watchEffect} from "vue";
 import {message} from "ant-design-vue";
 import CommonForm from "@/components/CommonForm.vue";
 import useForm from "@/hooks/useForm";
+import useUserLocal from "@/hooks/useUserLocal";
+import {$firstCommit} from "@/api/paintingApi.ts";
 
+const {userInfo, isLogin} = useUserLocal()
 const {formConfig} = useForm(drawconfig)
 const formRef = ref(null)
 
@@ -55,15 +58,30 @@ const tips = ref([
   "5.上传作品后，后续的过程可在个人空间中进行",
 ])
 const upLoadPainting = () => {
+  if (!isLogin) {
+    message.error("同学，提交绘画作品前，请先登录")
+    return
+  }
   formRef.value.onValidate(() => {
-    message.success("校验成功")
-
-    console.log("校验成功", formConfig.value.formState)
     // 获取canvas元素
     let canvas = document.getElementById('draw-panel');
     let base64Image = canvas.toDataURL('image/png');
-    console.log("校验成功--canvas", canvas)
-    console.log("校验成功-base64Image", base64Image)
+    let data = {
+      authorId: userInfo.userId,
+      paintingTime: '1小时30分钟',
+      selfAssessment: formConfig.value.formState.selfAssessment,
+      paintingStatus: 1,
+      paintingImg: base64Image
+    }
+    $firstCommit(data).then(res => {
+      console.log("paintingres", res)
+      if (res.data >= 1) {
+        message.success("提交成功，可在个人空间中查看记录")
+        upLoadModalShow.value = false
+      } else {
+        message.warn("服务器出现错误，请稍后再试")
+      }
+    })
     //   调取接口上传绘画历程
   }, () => {
     message.warn("同学，请先完成绘画过程的自我测评")
