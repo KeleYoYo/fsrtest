@@ -1,4 +1,5 @@
 import {message} from "ant-design-vue";
+import {useRouter} from "vue-router";
 
 /**
  * @description 获取用户信息
@@ -6,6 +7,7 @@ import {message} from "ant-design-vue";
  * @param needTip 是否在挂载时就提示
  * */
 export default function useUserLocal(needTip = false) {
+    const router = useRouter()
     var userInfo = '12'
     var isLogin = false
     const init = () => {
@@ -15,11 +17,9 @@ export default function useUserLocal(needTip = false) {
             userInfo = user
             isLogin = true
             console.log("user", user)
-            if (needTip) {
-                message.success("你已经登陆了")
-            }
         } else {
             if (needTip) {
+                router.push({name: 'login'})
                 message.error("请先登录")
             }
         }

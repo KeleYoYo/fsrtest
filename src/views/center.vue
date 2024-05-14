@@ -1,0 +1,148 @@
+<script setup lang="ts">
+import useUserLocal from "@/hooks/useUserLocal";
+import {ref} from "vue";
+import {useRouter} from "vue-router";
+
+const {userInfo} = useUserLocal(true)
+const router = useRouter()
+const leftBtns = ref([
+  {
+    text: "个人信息",
+    icon: "fab fa-facebook-f",
+    path: 'info'
+  },
+  {
+    text: "我的绘画",
+    icon: "fab fa-twitter",
+    path: 'partings'
+  },
+])
+
+</script>
+
+<template>
+  <div class="person-center">
+    <div class="left card">
+      <div class="wrapper">
+        <div @click="router.push({name:item.path})" v-for="item in leftBtns" :key="item.text" class="button">
+          <div class="icon">
+            <i :class="`fab ${item.icon}`"></i>
+          </div>
+          <span>{{ item.text }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="right  card">
+      <router-view></router-view>
+    </div>
+  </div>
+</template>
+
+<style lang="less" scoped>
+.person-center {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 20px;
+
+  .left {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    .wrapper .button {
+      display: inline-block;
+      height: 60px;
+      width: 60px;
+      float: left;
+      margin: 0 5px;
+      overflow: hidden;
+      background: #fff;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease-out;
+    }
+
+    .wrapper .button:hover {
+      width: 200px;
+    }
+
+    .wrapper .button .icon {
+      display: inline-block;
+      height: 60px;
+      width: 60px;
+      text-align: center;
+      border-radius: 50px;
+      box-sizing: border-box;
+      line-height: 60px;
+      transition: all 0.3s ease-out;
+    }
+
+    .wrapper .button:nth-child(1):hover .icon {
+      background: #4267B2;
+    }
+
+    .wrapper .button:nth-child(2):hover .icon {
+      background: #1DA1F2;
+    }
+
+    .wrapper .button:nth-child(3):hover .icon {
+      background: #E1306C;
+    }
+
+    .wrapper .button:nth-child(4):hover .icon {
+      background: #333;
+    }
+
+    .wrapper .button:nth-child(5):hover .icon {
+      background: #ff0000;
+    }
+
+    .wrapper .button .icon i {
+      font-size: 25px;
+      line-height: 60px;
+      transition: all 0.3s ease-out;
+    }
+
+    .wrapper .button:hover .icon i {
+      color: #fff;
+    }
+
+    .wrapper .button span {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 60px;
+      margin-left: 10px;
+      transition: all 0.3s ease-out;
+    }
+
+    .wrapper .button:nth-child(1) span {
+      color: #4267B2;
+    }
+
+    .wrapper .button:nth-child(2) span {
+      color: #1DA1F2;
+    }
+
+    .wrapper .button:nth-child(3) span {
+      color: #E1306C;
+    }
+
+    .wrapper .button:nth-child(4) span {
+      color: #333;
+    }
+
+    .wrapper .button:nth-child(5) span {
+      color: #ff0000;
+    }
+  }
+
+  .right {
+    flex: 1;
+  }
+}
+
+</style>

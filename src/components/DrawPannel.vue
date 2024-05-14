@@ -1,6 +1,6 @@
 <template>
-  <div :style="{'--bg':panelBgColor}" class="draw">
-    <canvas :class="`${isEraser?'eraser':''}`" id="draw-panel">
+  <div class="draw">
+    <canvas :style="{'--bg':panelBgColor}" :class="`${isEraser?'eraser':''}`" id="draw-panel">
     </canvas>
     <div class="tools">
       <div class="colors">

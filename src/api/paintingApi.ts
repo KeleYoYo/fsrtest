@@ -10,3 +10,13 @@ export function $firstCommit(data = {}) {
         data
     })
 }
+
+// 获取我的绘画列表
+export function $getMyPaintingList(authorId) {
+    console.log("$getMyPaintingList", authorId)
+    return service({
+        // url: `/api/u8login`,
+        url: `/painting/list?authorId=${authorId}`,
+        method: 'get',
+    })
+}
