@@ -17,13 +17,58 @@
         </li>
       </div>
     </div>
+
+    <a-modal @ok="upLoadPainting" okText="确认上传" cancelText="暂不上传" v-model:open="upLoadModalShow"
+             title="上传绘画记录 ">
+      <div class="tip">
+        <div style="padding: 10px" v-for="tip in tips">
+          {{ tip }}
+        </div>
+        <div style="color: red;font-weight: bold">
+          1.现在请对你的绘画过程进行自我描述
+        </div>
+        <CommonForm ref="formRef" :style="{'color':'black','background-color':'white','padding':'20px'}"
+                    :form-config="formConfig">
+        </CommonForm>
+      </div>
+    </a-modal>
   </div>
 </template>
 
 <script setup>
 // 初始化canvas画板
+import drawconfig from './formConfig/drawconfig.ts'
 import {onMounted, ref, watchEffect} from "vue";
 import {message} from "ant-design-vue";
+import CommonForm from "@/components/CommonForm.vue";
+import useForm from "@/hooks/useForm";
+
+const {formConfig} = useForm(drawconfig)
+const formRef = ref(null)
+
+const upLoadModalShow = ref(false)
+const tips = ref([
+  "同学你好，欢迎你上传你的绘画作品，请你注意以下几点 ：",
+  "1.上传作品之前需要你对自己的绘画过程进行简要的描述（重点可以是绘画心境，情绪等方面）",
+  "2.完成作品和自我描述后，点击上传按钮，等待老师对你的提问，老师讲根据你的自我描述和你的回复来对你进行指导",
+  "4.回复完成后，老师讲对你做出指导",
+  "5.上传作品后，后续的过程可在个人空间中进行",
+])
+const upLoadPainting = () => {
+  formRef.value.onValidate(() => {
+    message.success("校验成功")
+
+    console.log("校验成功", formConfig.value.formState)
+    // 获取canvas元素
+    let canvas = document.getElementById('draw-panel');
+    let base64Image = canvas.toDataURL('image/png');
+    console.log("校验成功--canvas", canvas)
+    console.log("校验成功-base64Image", base64Image)
+    //   调取接口上传绘画历程
+  }, () => {
+    message.warn("同学，请先完成绘画过程的自我测评")
+  })
+}
 
 const colorPanel = ref("hide")
 // 画板颜色
@@ -141,6 +186,11 @@ const eraserFn = () => {
   action = 'eraser'
   isEraser.value = true
 }
+const paintingUp = () => {
+  currentToolIdx.value = 6
+  action = 'paintingUp'
+  upLoadModalShow.value = true
+}
 const toolItem = ref([
   {label: "画笔颜色", action: "colorPike", clickFn: colorClick},
   {label: "画笔", action: "pencil", clickFn: pencilClick},
@@ -148,6 +198,7 @@ const toolItem = ref([
   {label: "清除", action: "delete", clickFn: cleanCanvas},
   {label: "下载", action: "download", clickFn: download},
   {label: "画板颜色", action: "colorPike", clickFn: panBgcolor},
+  {label: "上传绘画", action: "paintingUp", clickFn: paintingUp},
 ])
 
 

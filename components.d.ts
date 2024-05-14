@@ -11,6 +11,8 @@ declare module 'vue' {
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AInput: typeof import('ant-design-vue/es')['Input']
+    AModal: typeof import('ant-design-vue/es')['Modal']
+    ATextarea: typeof import('ant-design-vue/es')['Textarea']
     CommonForm: typeof import('./src/components/CommonForm.vue')['default']
     CommonTable: typeof import('./src/components/table/CommonTable.vue')['default']
     Drag: typeof import('./src/components/Test/Drag.vue')['default']

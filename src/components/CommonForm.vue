@@ -66,11 +66,17 @@ defineExpose({
       <a-form :layout="formConfig.layout" :disabled="props.formConfig.disabled" ref="formRef" :rules="formConfig.rules"
               :model="props.formConfig.formState" :label-col="props.formConfig.labelCol"
               :wrapper-col="props.formConfig.wrapperCol">
+
         <a-form-item :name="item.filed" v-for="item in props.formConfig.stateItem" :label="item.label">
-          <!--          输入框input类型-->
+          <!--          输入框类型-->
           <a-input :disabled="item.disabled" v-if="item.type=='input'"
                    v-model:value="props.formConfig.formState[item.filed]"/>
+
+          <!--          文本域类型-->
+          <a-textarea :disabled="item.disabled" v-if="item.type=='textarea'"
+                      v-model:value="props.formConfig.formState[item.filed]" placeholder="请输入" :rows="6"/>
         </a-form-item>
+
         <a-form-item :wrapper-col="buttonWraper()">
           <div class="btns">
             <slot name="button"></slot>
