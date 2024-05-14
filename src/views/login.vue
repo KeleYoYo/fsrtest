@@ -35,6 +35,7 @@ import {ref, toRaw} from "vue";
 import {message} from "ant-design-vue";
 import useForm from "@/hooks/useForm";
 import {$register, $userLogin} from "@/api/userApi.ts";
+import useUserLocal from "@/hooks/useUserLocal.ts";
 
 const formType = ref('login')
 
@@ -43,6 +44,8 @@ const {formConfig: LoginForm} = useForm(loginForm)
 const {formConfig: RegisterForm} = useForm(registerFormConfig)
 const loginFormRef = ref(null)
 const registerFormRef = ref(null)
+const {userInfo} = useUserLocal()
+console.log("userInfo", userInfo)
 const submit = () => {
   if (formType.value == 'login') {
     loginFormRef.value.onValidate(() => {
@@ -50,7 +53,7 @@ const submit = () => {
         console.log("登录", res)
         if (res.code === 200) {
           message.success("登录成功")
-          localStorage.setItem("userInfo", res.data)
+          localStorage.setItem("userInfo", JSON.stringify(res.data))
         } else {
           message.error(res.message)
         }
