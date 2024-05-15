@@ -39,6 +39,11 @@ const items = ref([
     title: '学生绘画记录',
     children: [
       {
+        key: 'paintingList',
+        label: '全部绘画列表',
+        title: '全部绘画列表',
+      },
+      {
         key: 'pendingQuestion',
         label: '待提问',
         title: '待提问',

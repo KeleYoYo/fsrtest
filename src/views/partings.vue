@@ -49,17 +49,21 @@ function handleDetail(item) {
 // 学生回复老师问题
 function handleReply() {
   console.log("replyValue.value", replyValue.value)
-  if (currentPating.paintingStatus >= 3) {
+  console.log("currentPating", currentPating.value)
+  if (currentPating.value.paintingReply) {
+    detailShow.value = false
     return
+  } else {
+    $replyTeacher(replyValue.value).then(res => {
+      if (res.code === 200 && res.data >= 1) {
+        message.success("回复成功，请耐心等待老师给出最终结果")
+        getMyPartings()
+        detailShow.value = false
+      } else {
+        message.error("服务器出问题了，回复失败，请稍后再试")
+      }
+    })
   }
-  $replyTeacher(replyValue.value).then(res => {
-    if (res.code === 200 && res.data >= 1) {
-      message.success("回复成功，请耐心等待老师给出最终结果")
-    } else {
-      message.error("服务器出问题了，回复失败，请稍后再试")
-    }
-  })
-  detailShow.value = false
 }
 
 onMounted(() => {
@@ -134,7 +138,7 @@ onMounted(() => {
       <div style="display: flex;gap: 15px;font-weight: bold;font-size: 16px">
         <div style="width: 80px" class="label">我的回复：</div>
         <div v-if="currentPating.paintingStatus < 2" style="color: #17c2e0" class="val">请等待下一流程。。。</div>
-        <div v-if="currentPating.paintingStatus <= 2 && currentPating.paintingStatus < 3" style="color: #17c2e0"
+        <div v-if="currentPating.paintingStatus >= 2 && currentPating.paintingStatus < 3" style="color: #17c2e0"
              class="val">
           <a-textarea style="width: 270px;" v-model:value="replyValue" placeholder="请回答老师提出的问题" :rows="4"/>
         </div>
