@@ -21,4 +21,31 @@ export function $getRoomQuestions() {
     })
 }
 
+// 添加树问题
+export function $addTreeQuestion(data) {
+    return service({
+        url: `/question/treeAdd`,
+        method: 'post',
+        data
+    })
+}
+
+// 添加人问题
+export function $addRoomQuestion(data) {
+    return service({
+        url: `/question/roomAdd`,
+        method: 'post',
+        data
+    })
+}
+
+// 添加人问题
+export function $addPersonQuestion(data) {
+    return service({
+        url: `/question/personAdd`,
+        method: 'post',
+        data
+    })
+}
+
 

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 
 import {onMounted, ref} from "vue";
-import {$getTreeQuestions} from "@/api/questionApi";
+import {$addTreeQuestion, $getTreeQuestions} from "@/api/questionApi";
+import {message} from "ant-design-vue";
 
 const addQuestionVal = ref("")
 
@@ -48,7 +49,18 @@ function confirmDel() {
 }
 
 function addQuestion() {
-  addShow.value = false
+  $addTreeQuestion({
+    treeId: '',
+    treeQuestionContent: addQuestionVal.value
+  }).then(res => {
+    if (res.code == 200) {
+      message.success("新增成功")
+      getQuestions()
+      addShow.value = false
+    } else {
+      message.error("新增失败")
+    }
+  })
 }
 </script>
 
@@ -129,6 +141,9 @@ function addQuestion() {
   .table {
     flex: 1;
     background: black;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
 
     .question-item {
       width: 200px;
