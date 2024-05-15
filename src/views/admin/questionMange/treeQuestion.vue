@@ -12,17 +12,26 @@ const editShow = ref(false)
 const currentItem = ref({})
 const searchVal = ref('')
 const orginalData = ref([])
+const copyData = ref([])
 
 async function getQuestions() {
   let res = await $getTreeQuestions()
   orginalData.value = res.data
+  copyData.value = res.data
 }
 
 onMounted(() => {
   getQuestions()
 })
 function onSearch() {
-
+  console.log("搜索", searchVal.value)
+  if (!searchVal.value) {
+    orginalData.value = copyData.value
+  } else {
+    orginalData.value = orginalData.value.filter(item => {
+      return item.treeQuestionContent.includes(searchVal.value)
+    })
+  }
 }
 
 function edit(item) {
