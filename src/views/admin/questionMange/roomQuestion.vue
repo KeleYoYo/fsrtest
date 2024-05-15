@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {onMounted, ref} from "vue";
-import {$addPersonQuestion, $delPersonQuestion, $getPersonQuestions, $updatePersonQuestion,} from "@/api/questionApi";
+import {$addRoomQuestion, $delRoomQuestion, $getRoomQuestions, $updateRoomQuestion} from "@/api/questionApi";
 import {message} from "ant-design-vue";
 
 const addQuestionVal = ref("")
@@ -15,7 +15,7 @@ const orginalData = ref([])
 const copyData = ref([])
 
 async function getQuestions() {
-  let res = await $getPersonQuestions()
+  let res = await $getRoomQuestions()
   orginalData.value = res.data
   copyData.value = res.data
 }
@@ -25,18 +25,19 @@ onMounted(() => {
 })
 
 function onSearch() {
-  console.log("搜索", searchVal.value)
   if (!searchVal.value) {
     orginalData.value = copyData.value
   } else {
     orginalData.value = orginalData.value.filter(item => {
-      return item.personQuestionContent.includes(searchVal.value)
+      return item.roomQuestionContent.includes(searchVal.value)
     })
   }
 }
 
 function edit(item) {
   currentItem.value = item
+
+
   editShow.value = true
 }
 
@@ -46,7 +47,7 @@ function editCancle() {
 }
 
 function eidtOk() {
-  $updatePersonQuestion(currentItem.value).then(res => {
+  $updateRoomQuestion(currentItem.value).then(res => {
     if (res.code == 200) {
       message.success("修改成功")
       getQuestions()
@@ -62,7 +63,7 @@ function del(row) {
 }
 
 function confirmDel() {
-  $delPersonQuestion(currentItem.value).then(res => {
+  $delRoomQuestion(currentItem.value).then(res => {
     if (res.code == 200) {
       message.success("删除成功")
       getQuestions()
@@ -73,9 +74,9 @@ function confirmDel() {
 }
 
 function addQuestion() {
-  $addPersonQuestion({
-    personId: '',
-    personQuestionContent: addQuestionVal.value
+  $addRoomQuestion({
+    roomId: '',
+    roomQuestionContent: addQuestionVal.value
   }).then(res => {
     if (res.code == 200) {
       message.success("新增成功")
@@ -91,7 +92,7 @@ function addQuestion() {
 <template>
   <div class="full">
     <div class="header card">
-      <a-button @click="addShow = true" type="primary">新增人问题</a-button>
+      <a-button @click="addShow = true" type="primary">新增房问题</a-button>
       <a-input-search
           v-model:value="searchVal"
           placeholder="模糊查询"
@@ -112,7 +113,7 @@ function addQuestion() {
             <span @click="del(item)">删除</span>
           </a-popconfirm>
         </div>
-        {{ item.personQuestionContent }}
+        {{ item.roomQuestionContent }}
       </div>
     </div>
 
@@ -131,7 +132,7 @@ function addQuestion() {
              title="修改问题 ">
       <div>
         问题：
-        <a-textarea v-model:value="currentItem.personQuestionContent" :rows="4"/>
+        <a-textarea v-model:value="currentItem.roomQuestionContent" :rows="4"/>
       </div>
     </a-modal>
   </div>

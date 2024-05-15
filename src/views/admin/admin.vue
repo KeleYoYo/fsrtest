@@ -35,6 +35,11 @@ const items = ref([
         label: '关于人',
         title: '关于人',
       },
+      {
+        key: 'roomQuestion',
+        label: '关于房',
+        title: '关于房',
+      },
     ],
   },
   {

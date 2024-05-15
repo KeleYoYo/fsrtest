@@ -72,4 +72,27 @@ export function $delPersonQuestion(data) {
 }
 
 
+export function $addRoomQuestion(data) {
+    return service({
+        url: `/question/roomAdd`,
+        method: 'post',
+        data
+    })
+}
+
+export function $updateRoomQuestion(data) {
+    return service({
+        url: `/question/roomUpdate`,
+        method: 'post',
+        data
+    })
+}
+
+export function $delRoomQuestion(data) {
+    return service({
+        url: `/question/roomDel`,
+        method: 'post',
+        data
+    })
+}
 
