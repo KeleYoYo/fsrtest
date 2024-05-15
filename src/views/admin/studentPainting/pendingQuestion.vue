@@ -2,10 +2,16 @@
 import {onMounted, ref} from "vue";
 import {tableConfig} from "./tableConfig/index";
 import useTableList from "@/hooks/useTableList";
-import {$getPaintingList} from "@/api/paintingApi";
+import {$getPaintingList, $questionStudent} from "@/api/paintingApi";
 import useTreeQuestions from "@/hooks/useTreeQuestions";
 import usePersonQuestions from "@/hooks/usePersonQuestions";
 import useRoomQuestions from "@/hooks/useRoomQuestions";
+import {renturnQuestionStr} from '@/utils/questionUtils'
+import {message} from "ant-design-vue";
+import useUserLocal from "@/hooks/useUserLocal";
+
+const {userInfo} = useUserLocal()
+console.log("userInfo", userInfo)
 
 const visibleDetail = ref(false)
 const currentRow = ref({})
@@ -19,6 +25,40 @@ const {roomQuestion} = useRoomQuestions()
 const roomValue = ref([])
 const personValue = ref([])
 const treeValue = ref([])
+
+// sub1*sub2*sub3
+function handleConfirm() {
+  if (roomValue.value.length <= 0) {
+    message.warning("请选择关于房的提问")
+    return
+  }
+  if (treeValue.value.length <= 0) {
+    message.warning("请选择关于树的提问")
+    return
+  }
+  if (personValue.value.length <= 0) {
+    message.warning("请选择关于人的提问")
+    return
+  }
+  let str = renturnQuestionStr(roomValue.value, treeValue.value, personValue.value)
+  console.log("userId", userInfo.userId)
+  $questionStudent(2, str).then(res => {
+    console.log("提问完成", res)
+    if (res.code == 200 && res.data > 0) {
+      getTableData()
+      visibleDetail.value = false
+      message.success(res.message)
+    } else {
+      message.error(res.message)
+    }
+  })
+}
+
+function getTableData() {
+  $getPaintingList(1).then(res => {
+    tableState.gridOptions.data = res.data
+  })
+}
 
 onMounted(() => {
   $getPaintingList(1).then(res => {
@@ -50,7 +90,8 @@ const showDetail = (row) => {
       </Table>
     </div>
 
-    <a-modal style="width: 900px;height: 800px;overflow-y: auto" v-model:open="visibleDetail" okText="确认"
+    <a-modal @ok="handleConfirm" style="width: 900px;height: 800px;overflow-y: auto" v-model:open="visibleDetail"
+             okText="确认"
              cancelText="取消"
              title="学生绘画记录 ">
       <div style="display: flex;flex-direction: column;align-items: center" class="container">

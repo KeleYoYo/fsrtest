@@ -27,3 +27,13 @@ export function $getPaintingList(status) {
         method: 'get',
     })
 }
+
+
+// 对学生提问
+export function $questionStudent(status, questionStr) {
+    let teacherId = JSON.parse(localStorage.getItem("userInfo")).userId
+    return service({
+        url: `/painting/question?paintingStatus=${status}&questionStr=${questionStr}&teacherId=${teacherId}`,
+        method: 'post',
+    })
+}
