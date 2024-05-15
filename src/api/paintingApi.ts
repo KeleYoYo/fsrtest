@@ -37,3 +37,12 @@ export function $questionStudent(status, questionStr) {
         method: 'post',
     })
 }
+
+
+// 回复老师问题
+export function $replyTeacher(replyContent) {
+    return service({
+        url: `/painting/reply?replyContent=${replyContent}`,
+        method: 'post',
+    })
+}
