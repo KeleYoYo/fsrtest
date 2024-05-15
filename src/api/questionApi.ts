@@ -46,19 +46,26 @@ export function $delTreeQuestion(data) {
     })
 }
 
-// 添加人问题
-export function $addRoomQuestion(data) {
+
+export function $addPersonQuestion(data) {
     return service({
-        url: `/question/roomAdd`,
+        url: `/question/personAdd`,
         method: 'post',
         data
     })
 }
 
-// 添加人问题
-export function $addPersonQuestion(data) {
+export function $updatePersonQuestion(data) {
     return service({
-        url: `/question/personAdd`,
+        url: `/question/personUpdate`,
+        method: 'post',
+        data
+    })
+}
+
+export function $delPersonQuestion(data) {
+    return service({
+        url: `/question/personDel`,
         method: 'post',
         data
     })

@@ -30,6 +30,11 @@ const items = ref([
         label: '关于树',
         title: '关于树',
       },
+      {
+        key: 'personQuestion',
+        label: '关于人',
+        title: '关于人',
+      },
     ],
   },
   {

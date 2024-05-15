@@ -52,6 +52,11 @@ const router = createRouter({
                   name: 'treeQuestion',
                   component: () => import("@/views/admin/questionMange/treeQuestion.vue")
               },
+              {
+                  path: 'personQuestion',
+                  name: 'personQuestion',
+                  component: () => import("@/views/admin/questionMange/personQuestion.vue")
+              },
           ]
       },
       {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {onMounted, ref} from "vue";
-import {$addTreeQuestion, $delTreeQuestion, $getTreeQuestions, $updateTreeQuestion} from "@/api/questionApi";
+import {$addPersonQuestion, $delPersonQuestion, $getPersonQuestions, $updatePersonQuestion,} from "@/api/questionApi";
 import {message} from "ant-design-vue";
 
 const addQuestionVal = ref("")
@@ -15,7 +15,7 @@ const orginalData = ref([])
 const copyData = ref([])
 
 async function getQuestions() {
-  let res = await $getTreeQuestions()
+  let res = await $getPersonQuestions()
   orginalData.value = res.data
   copyData.value = res.data
 }
@@ -23,21 +23,20 @@ async function getQuestions() {
 onMounted(() => {
   getQuestions()
 })
+
 function onSearch() {
   console.log("搜索", searchVal.value)
   if (!searchVal.value) {
     orginalData.value = copyData.value
   } else {
     orginalData.value = orginalData.value.filter(item => {
-      return item.treeQuestionContent.includes(searchVal.value)
+      return item.personQuestionContent.includes(searchVal.value)
     })
   }
 }
 
 function edit(item) {
   currentItem.value = item
-
-
   editShow.value = true
 }
 
@@ -47,7 +46,7 @@ function editCancle() {
 }
 
 function eidtOk() {
-  $updateTreeQuestion(currentItem.value).then(res => {
+  $updatePersonQuestion(currentItem.value).then(res => {
     if (res.code == 200) {
       message.success("修改成功")
       getQuestions()
@@ -63,7 +62,7 @@ function del(row) {
 }
 
 function confirmDel() {
-  $delTreeQuestion(currentItem.value).then(res => {
+  $delPersonQuestion(currentItem.value).then(res => {
     if (res.code == 200) {
       message.success("删除成功")
       getQuestions()
@@ -74,9 +73,9 @@ function confirmDel() {
 }
 
 function addQuestion() {
-  $addTreeQuestion({
-    treeId: '',
-    treeQuestionContent: addQuestionVal.value
+  $addPersonQuestion({
+    personId: '',
+    personQuestionContent: addQuestionVal.value
   }).then(res => {
     if (res.code == 200) {
       message.success("新增成功")
@@ -113,7 +112,7 @@ function addQuestion() {
             <span @click="del(item)">删除</span>
           </a-popconfirm>
         </div>
-        {{ item.treeQuestionContent }}
+        {{ item.personQuestionContent }}
       </div>
     </div>
 
@@ -132,7 +131,7 @@ function addQuestion() {
              title="修改问题 ">
       <div>
         问题：
-        <a-textarea v-model:value="currentItem.treeQuestionContent" :rows="4"/>
+        <a-textarea v-model:value="currentItem.personQuestionContent" :rows="4"/>
       </div>
     </a-modal>
   </div>
@@ -150,6 +149,7 @@ function addQuestion() {
   }
   /* 中间状态，放大10% */
 }
+
 .full {
   //background-color: yellow;
   padding: 20px;
