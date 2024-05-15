@@ -19,3 +19,25 @@ export function $register(data = {}) {
     })
 }
 
+
+export function $getUserList() {
+    return service({
+        url: `/user/list`,
+        method: 'get',
+    })
+}
+
+export function $getUserInfo(userId) {
+    return service({
+        url: `/user/info?userId=${userId}`,
+        method: 'get',
+    })
+}
+
+export function $editUser(user) {
+    return service({
+        url: `/user/edit`,
+        method: 'post',
+        data: user
+    })
+}

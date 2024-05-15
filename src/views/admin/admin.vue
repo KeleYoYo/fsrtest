@@ -13,7 +13,7 @@ const items = ref([
     title: '用户管理',
     children: [
       {
-        key: 'userlist',
+        key: 'userList',
         label: '用户列表',
         title: '用户列表',
       },

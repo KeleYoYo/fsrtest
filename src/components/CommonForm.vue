@@ -72,6 +72,12 @@ defineExpose({
           <a-input :disabled="item.disabled" v-if="item.type=='input'"
                    v-model:value="props.formConfig.formState[item.filed]"/>
 
+          <!--          单项下拉选择类型-->
+          <a-select v-if="item.type=='select'" v-model:value="props.formConfig.formState[item.filed]"
+                    :disabled="item.disabled"
+                    placeholder="请选择" style="width: 100%" :options="item.options">
+          </a-select>
+
           <!--          文本域类型-->
           <a-textarea :disabled="item.disabled" v-if="item.type=='textarea'"
                       v-model:value="props.formConfig.formState[item.filed]" placeholder="请输入" :rows="6"/>

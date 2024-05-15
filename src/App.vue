@@ -25,6 +25,7 @@ body,html,#app{
   width: 100%;
   height: 100%;
   //background-color: yellow;
+  background: black;
   .main {
     height: 100%;
     padding: 120px 20px 0 20px;
