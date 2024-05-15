@@ -48,4 +48,12 @@ export function $addPersonQuestion(data) {
     })
 }
 
+export function $updateTreeQuestion(data) {
+    return service({
+        url: `/question/treeUpdate`,
+        method: 'post',
+        data
+    })
+}
+
 

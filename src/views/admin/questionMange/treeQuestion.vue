@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {onMounted, ref} from "vue";
-import {$addTreeQuestion, $getTreeQuestions} from "@/api/questionApi";
+import {$addTreeQuestion, $getTreeQuestions, $updateTreeQuestion} from "@/api/questionApi";
 import {message} from "ant-design-vue";
 
 const addQuestionVal = ref("")
@@ -36,6 +36,8 @@ function onSearch() {
 
 function edit(item) {
   currentItem.value = item
+
+
   editShow.value = true
 }
 
@@ -45,8 +47,15 @@ function editCancle() {
 }
 
 function eidtOk() {
-  console.log("eidtOk", currentItem.value)
-  editShow.value = false
+  $updateTreeQuestion(currentItem.value).then(res => {
+    if (res.code == 200) {
+      message.success("修改成功")
+      getQuestions()
+      editShow.value = false
+    } else {
+      message.error("修改失败")
+    }
+  })
 }
 
 function del(row) {
