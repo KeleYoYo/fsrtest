@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import {pendingComment} from "@/views/admin/studentPainting/tableConfig/pendingComment";
+import {paintingList} from "@/views/admin/studentPainting/tableConfig/paintingList";
 import useTableList from "@/hooks/useTableList";
 import {$getPaintingList, $giveReport} from "@/api/paintingApi";
 import {computed, onMounted, ref} from "vue";
 import {returnQuestionArr} from "@/utils/questionUtils";
 import {message} from "ant-design-vue";
 
-const {tableState} = useTableList(pendingComment)
+const {tableState} = useTableList(paintingList)
 
 const remarkValue = ref('')
 
@@ -15,7 +15,7 @@ const currentRow = ref({})
 const visibleDetail = ref(false)
 
 function getTableData() {
-  $getPaintingList(3).then(res => {
+  $getPaintingList(0).then(res => {
     tableState.gridOptions.data = res.data
   })
 }
@@ -35,7 +35,7 @@ function handleComment() {
   if (!remarkValue.value) {
     message.warning('测评内容不能为空')
   } else {
-    $giveReport(remarkValue.value, currentRow.value.paintingId).then(res => {
+    $giveReport(remarkValue.value).then(res => {
       if (res.code == 200 && res.data > 0) {
         message.success(res.message)
         getTableData()
@@ -59,6 +59,13 @@ onMounted(() => {
         <template #paintingImg="{row}">
           <img style="width: 150px;height: 150px" :src="row.paintingImg" alt=""/>
         </template>
+        <template #paintingStatus="{row}">
+          <span style="color: #ea6f08" v-show="row.paintingStatus == 1">待老师提问</span>
+          <span style="color: #36ecdd" v-show="row.paintingStatus == 2">待学生回复问题</span>
+          <span style="color: #f30558" v-show="row.paintingStatus == 3">待老师给出测评报告</span>
+          <span style="color: #31f114" v-show="row.paintingStatus == 4">已完成测评</span>
+        </template>
+
         <template #action="{row}">
           <div>
             <a-button @click="showDetail(row)" type="link">给出测评</a-button>

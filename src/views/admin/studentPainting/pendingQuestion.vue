@@ -41,8 +41,8 @@ function handleConfirm() {
     return
   }
   let str = renturnQuestionStr(roomValue.value, treeValue.value, personValue.value)
-  console.log("userId", userInfo.userId)
-  $questionStudent(2, str).then(res => {
+  let paintingId = currentRow.value.paintingId
+  $questionStudent(2, str, paintingId).then(res => {
     console.log("提问完成", res)
     if (res.code == 200 && res.data > 0) {
       getTableData()

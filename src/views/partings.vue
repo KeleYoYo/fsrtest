@@ -48,13 +48,11 @@ function handleDetail(item) {
 // update painting_records set painting_reply = #{paintingReply},painting_status = 3
 // 学生回复老师问题
 function handleReply() {
-  console.log("replyValue.value", replyValue.value)
-  console.log("currentPating", currentPating.value)
-  if (currentPating.value.paintingReply) {
+  if (currentPating.value.paintingStatus != 2) {
     detailShow.value = false
     return
   } else {
-    $replyTeacher(replyValue.value).then(res => {
+    $replyTeacher(replyValue.value, currentPating.value.paintingId).then(res => {
       if (res.code === 200 && res.data >= 1) {
         message.success("回复成功，请耐心等待老师给出最终结果")
         getMyPartings()

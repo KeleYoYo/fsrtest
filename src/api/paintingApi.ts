@@ -30,28 +30,28 @@ export function $getPaintingList(status) {
 
 
 // 对学生提问
-export function $questionStudent(status, questionStr) {
+export function $questionStudent(status, questionStr, paintingId) {
     let teacherId = JSON.parse(localStorage.getItem("userInfo")).userId
     return service({
-        url: `/painting/question?paintingStatus=${status}&questionStr=${questionStr}&teacherId=${teacherId}`,
+        url: `/painting/question?paintingStatus=${status}&questionStr=${questionStr}&teacherId=${teacherId}&paintingId=${paintingId}`,
         method: 'post',
     })
 }
 
 
 // 回复老师问题
-export function $replyTeacher(replyContent) {
+export function $replyTeacher(replyContent, paintingId) {
     return service({
-        url: `/painting/reply?replyContent=${replyContent}`,
+        url: `/painting/reply?replyContent=${replyContent}&paintingId=${paintingId}`,
         method: 'post',
     })
 }
 
 
 // 给出测评报告
-export function $giveReport(reportContent) {
+export function $giveReport(reportContent, paintingId) {
     return service({
-        url: `/painting/report?reportContent=${reportContent}`,
+        url: `/painting/report?reportContent=${reportContent}&paintingId=${paintingId}`,
         method: 'post',
     })
 }
