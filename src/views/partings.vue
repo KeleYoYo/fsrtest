@@ -49,6 +49,9 @@ function handleDetail(item) {
 // 学生回复老师问题
 function handleReply() {
   console.log("replyValue.value", replyValue.value)
+  if (currentPating.paintingStatus >= 3) {
+    return
+  }
   $replyTeacher(replyValue.value).then(res => {
     if (res.code === 200 && res.data >= 1) {
       message.success("回复成功，请耐心等待老师给出最终结果")
@@ -144,7 +147,7 @@ onMounted(() => {
         <div style="width: 80px" class="label">测评结果：</div>
         <div v-if="currentPating.paintingStatus <= 3" style="color: #17c2e0" class="val">请等待下一流程。。。</div>
         <div v-if="currentPating.paintingStatus >= 4" style="color: #17c2e0" class="val">
-          老师给出的测评结果
+          {{ currentPating.paintingRemark }}
         </div>
       </div>
     </a-modal>

@@ -36,6 +36,11 @@ const router = createRouter({
                   name: 'pendingQuestion',
                   component: () => import("@/views/admin/studentPainting/pendingQuestion.vue")
               },
+              {
+                  path: 'pendingComment',
+                  name: 'pendingComment',
+                  component: () => import("@/views/admin/studentPainting/pendingComment.vue")
+              },
           ]
       },
       {

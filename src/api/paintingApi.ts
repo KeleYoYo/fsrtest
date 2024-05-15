@@ -46,3 +46,12 @@ export function $replyTeacher(replyContent) {
         method: 'post',
     })
 }
+
+
+// 给出测评报告
+export function $giveReport(reportContent) {
+    return service({
+        url: `/painting/report?reportContent=${reportContent}`,
+        method: 'post',
+    })
+}

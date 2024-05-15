@@ -159,9 +159,10 @@ const showDetail = (row) => {
 .pendingQuestion {
   color: red;
   padding: 30px;
+  height: 100%;
 
   .table {
-    height: 600px;
+    height: 100%;
   }
 }
 </style>
