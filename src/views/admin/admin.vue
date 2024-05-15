@@ -22,13 +22,13 @@ const items = ref([
   {
     key: 'articleMange',
     icon: () => h(SettingOutlined),
-    label: '文章管理',
-    title: '文章管理',
+    label: '提问管理',
+    title: '提问管理',
     children: [
       {
-        key: 'articlelist',
-        label: '文章列表',
-        title: '文章列表',
+        key: 'treeQuestion',
+        label: '关于树',
+        title: '关于树',
       },
     ],
   },

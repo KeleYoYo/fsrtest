@@ -46,6 +46,12 @@ const router = createRouter({
                   name: 'paintingList',
                   component: () => import("@/views/admin/studentPainting/paintingList.vue")
               },
+
+              {
+                  path: 'treeQuestion',
+                  name: 'treeQuestion',
+                  component: () => import("@/views/admin/questionMange/treeQuestion.vue")
+              },
           ]
       },
       {
