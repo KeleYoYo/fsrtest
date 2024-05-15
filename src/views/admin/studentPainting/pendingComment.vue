@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {pendingComment} from "@/views/admin/studentPainting/tableConfig/pendingComment";
 import useTableList from "@/hooks/useTableList";
-import {$getPaintingList, $giveReport} from "@/api/paintingApi";
+import {$deletePainting, $getPaintingList, $giveReport} from "@/api/paintingApi";
 import {computed, onMounted, ref} from "vue";
 import {returnQuestionArr} from "@/utils/questionUtils";
 import {message} from "ant-design-vue";
@@ -50,6 +50,25 @@ function handleComment() {
 onMounted(() => {
   getTableData()
 })
+const confirmDel = (e: MouseEvent) => {
+  console.log("currentRow", currentRow.value)
+  $deletePainting(currentRow.value.paintingId).then(res => {
+    if (res.code === 200 && res.data > 0) {
+      message.success("删除成功")
+      getTableData()
+    } else {
+      message.error("删除失败")
+    }
+  })
+};
+
+const cancelDel = (e: MouseEvent) => {
+  console.log(e);
+};
+
+function log(row) {
+  currentRow.value = row
+}
 </script>
 
 <template>
@@ -62,7 +81,15 @@ onMounted(() => {
         <template #action="{row}">
           <div>
             <a-button @click="showDetail(row)" type="link">给出测评</a-button>
-            <a-button type="link">删除</a-button>
+            <a-popconfirm
+                title="确认要删除这条评测记录吗？"
+                ok-text="是的"
+                cancel-text="取消"
+                @confirm="confirmDel"
+                @cancel="cancelDel"
+            >
+              <a-button @click="log(row)" type="link">删除该记录</a-button>
+            </a-popconfirm>
           </div>
         </template>
       </Table>

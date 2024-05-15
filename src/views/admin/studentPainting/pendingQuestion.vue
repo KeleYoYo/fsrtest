@@ -2,7 +2,7 @@
 import {onMounted, ref} from "vue";
 import {tableConfig} from "./tableConfig/index";
 import useTableList from "@/hooks/useTableList";
-import {$getPaintingList, $questionStudent} from "@/api/paintingApi";
+import {$deletePainting, $getPaintingList, $questionStudent} from "@/api/paintingApi";
 import useTreeQuestions from "@/hooks/useTreeQuestions";
 import usePersonQuestions from "@/hooks/usePersonQuestions";
 import useRoomQuestions from "@/hooks/useRoomQuestions";
@@ -70,6 +70,26 @@ const showDetail = (row) => {
   currentRow.value = row
   visibleDetail.value = true
 }
+
+const confirmDel = (e: MouseEvent) => {
+  console.log("currentRow", currentRow.value)
+  $deletePainting(currentRow.value.paintingId).then(res => {
+    if (res.code === 200 && res.data > 0) {
+      message.success("删除成功")
+      getTableData()
+    } else {
+      message.error("删除失败")
+    }
+  })
+};
+
+const cancelDel = (e: MouseEvent) => {
+  console.log(e);
+};
+
+function log(row) {
+  currentRow.value = row
+}
 </script>
 
 <template>
@@ -84,7 +104,15 @@ const showDetail = (row) => {
         <template #action="{row}">
           <div>
             <a-button @click="showDetail(row)" type="link">画像提问</a-button>
-            <a-button type="link">删除</a-button>
+            <a-popconfirm
+                title="确认要删除这条评测记录吗？"
+                ok-text="是的"
+                cancel-text="取消"
+                @confirm="confirmDel"
+                @cancel="cancelDel"
+            >
+              <a-button @click="log(row)" type="link">删除该记录</a-button>
+            </a-popconfirm>
           </div>
         </template>
       </Table>

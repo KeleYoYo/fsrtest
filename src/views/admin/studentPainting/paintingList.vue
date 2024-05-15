@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {paintingList} from "@/views/admin/studentPainting/tableConfig/paintingList";
 import useTableList from "@/hooks/useTableList";
-import {$getPaintingList, $giveReport} from "@/api/paintingApi";
+import {$deletePainting, $getPaintingList} from "@/api/paintingApi";
 import {computed, onMounted, ref} from "vue";
 import {returnQuestionArr} from "@/utils/questionUtils";
 import {message} from "ant-design-vue";
@@ -32,21 +32,28 @@ const showDetail = (row) => {
 }
 
 function handleComment() {
-  if (!remarkValue.value) {
-    message.warning('测评内容不能为空')
-  } else {
-    $giveReport(remarkValue.value).then(res => {
-      if (res.code == 200 && res.data > 0) {
-        message.success(res.message)
-        getTableData()
-        visibleDetail.value = false
-      } else {
-        message.error(res.message)
-      }
-    })
-  }
+  visibleDetail.value = false
 }
 
+const confirmDel = (e: MouseEvent) => {
+  console.log("currentRow", currentRow.value)
+  $deletePainting(currentRow.value.paintingId).then(res => {
+    if (res.code === 200 && res.data > 0) {
+      message.success("删除成功")
+      getTableData()
+    } else {
+      message.error("删除失败")
+    }
+  })
+};
+
+const cancelDel = (e: MouseEvent) => {
+  console.log(e);
+};
+
+function log(row) {
+  currentRow.value = row
+}
 onMounted(() => {
   getTableData()
 })
@@ -68,8 +75,17 @@ onMounted(() => {
 
         <template #action="{row}">
           <div>
-            <a-button @click="showDetail(row)" type="link">给出测评</a-button>
-            <a-button type="link">删除</a-button>
+            <a-button @click="showDetail(row)" type="link">查看详情</a-button>
+
+            <a-popconfirm
+                title="确认要删除这条评测记录吗？"
+                ok-text="是的"
+                cancel-text="取消"
+                @confirm="confirmDel"
+                @cancel="cancelDel"
+            >
+              <a-button @click="log(row)" type="link">删除该记录</a-button>
+            </a-popconfirm>
           </div>
         </template>
       </Table>
@@ -104,8 +120,9 @@ onMounted(() => {
 
       <div style="display: flex;gap: 15px;align-items: center;font-size: 16px;padding: 5px 0">
         <div style="font-weight: bold;color: #17c2e0;width: 80px">提问:</div>
+        <span v-if="!currentRow.paintingQuestion">暂无提问</span>
       </div>
-      <div style="padding: 2px 10px">
+      <div v-if="currentRow.paintingQuestion" style="padding: 2px 10px">
         <div
             style="display: flex;gap: 15px;font-weight: bold;padding: 5px 0" class="val">
           <div style="width: 80px">关于房：</div>
@@ -140,15 +157,14 @@ onMounted(() => {
       <div style="display: flex;gap: 15px;align-items: center;font-size: 16px;">
         <div style="font-weight: bold;color: #17c2e0;width: 80px">学生回复:</div>
         <div>
-          {{ currentRow.paintingReply }}
+          {{ currentRow.paintingReply || '暂无回复' }}
         </div>
       </div>
 
       <div style="display: flex;gap: 15px;align-items: center;font-size: 16px;padding: 15px 0">
         <div style="font-weight: bold;color: #17c2e0;width: 80px">测评报告:</div>
+        {{ currentRow.paintingRemark || '暂未生成测评报告' }}
       </div>
-      <a-textarea style="width: 400px;" v-model:value="remarkValue"
-                  placeholder="请你结合学生画作内容，给出符合学生情况的心理测评报告" :rows="6"/>
     </a-modal>
   </div>
 </template>

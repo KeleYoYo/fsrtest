@@ -55,3 +55,12 @@ export function $giveReport(reportContent, paintingId) {
         method: 'post',
     })
 }
+
+
+// 删除绘画记录
+export function $deletePainting(paintingId) {
+    return service({
+        url: `/painting/delete?paintingId=${paintingId}`,
+        method: 'post',
+    })
+}
