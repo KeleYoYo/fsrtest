@@ -30,6 +30,22 @@ export function $addTreeQuestion(data) {
     })
 }
 
+export function $updateTreeQuestion(data) {
+    return service({
+        url: `/question/treeUpdate`,
+        method: 'post',
+        data
+    })
+}
+
+export function $delTreeQuestion(data) {
+    return service({
+        url: `/question/treeDel`,
+        method: 'post',
+        data
+    })
+}
+
 // 添加人问题
 export function $addRoomQuestion(data) {
     return service({
@@ -48,12 +64,5 @@ export function $addPersonQuestion(data) {
     })
 }
 
-export function $updateTreeQuestion(data) {
-    return service({
-        url: `/question/treeUpdate`,
-        method: 'post',
-        data
-    })
-}
 
 

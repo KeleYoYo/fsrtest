@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {onMounted, ref} from "vue";
-import {$addTreeQuestion, $getTreeQuestions, $updateTreeQuestion} from "@/api/questionApi";
+import {$addTreeQuestion, $delTreeQuestion, $getTreeQuestions, $updateTreeQuestion} from "@/api/questionApi";
 import {message} from "ant-design-vue";
 
 const addQuestionVal = ref("")
@@ -63,7 +63,14 @@ function del(row) {
 }
 
 function confirmDel() {
-  console.log("删除 ", currentItem.value)
+  $delTreeQuestion(currentItem.value).then(res => {
+    if (res.code == 200) {
+      message.success("删除成功")
+      getQuestions()
+    } else {
+      message.error("删除失败")
+    }
+  })
 }
 
 function addQuestion() {
@@ -113,7 +120,7 @@ function addQuestion() {
 
     <!--    新增问题-->
     <a-modal @ok="addQuestion" okText="确认添加" cancelText="暂不添加" v-model:open="addShow"
-             title="上传绘画记录 ">
+             title="新增问题 ">
       <div>
         问题内容：
         <a-textarea v-model:value="addQuestionVal" :rows="4"/>
@@ -122,7 +129,7 @@ function addQuestion() {
 
     <!--    编辑问题-->
     <a-modal @ok="eidtOk" @cancel="editCancle" okText="确认修改" cancelText="暂不修改" v-model:open="editShow"
-             title="修改树问题 ">
+             title="修改问题 ">
       <div>
         原问题：
         <a-textarea v-model:value="currentItem.treeQuestionContent" :rows="4"/>
