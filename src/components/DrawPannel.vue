@@ -1,5 +1,8 @@
 <template>
   <div class="draw">
+    <span style="color: red;position: fixed;right: 50px;top: 120px;z-index: 999">
+      绘画时长：{{ paintingTime }}
+    </span>
     <canvas :style="{'--bg':panelBgColor}" :class="`${isEraser?'eraser':''}`" id="draw-panel">
     </canvas>
     <div class="tools">
@@ -34,7 +37,7 @@
     </a-modal>
 
     <div class="vido-painting">
-      <CameraRecorder></CameraRecorder>
+      <CameraRecorder @sendVideoUrl="sendVideoUrl" ref="cameraRecorderRef"></CameraRecorder>
     </div>
   </div>
 </template>
@@ -42,7 +45,7 @@
 <script lang="ts" setup>
 // 初始化canvas画板
 import drawconfig from './formConfig/drawconfig.ts'
-import {onMounted, ref, watchEffect} from "vue";
+import {computed, onMounted, ref, watchEffect} from "vue";
 import {message} from "ant-design-vue";
 import CommonForm from "@/components/CommonForm.vue";
 import useForm from "@/hooks/useForm";
@@ -50,9 +53,26 @@ import useUserLocal from "@/hooks/useUserLocal";
 import {$firstCommit} from "@/api/paintingApi.ts";
 import CameraRecorder from "@/components/CameraRecorder.vue";
 
+const cameraRecorderRef = ref<InstanceType<typeof CameraRecorder>>(null)
+
+const time = ref(0)
+const paintingTime = computed(() => {
+  const hours = Math.floor(time.value / 3600); // 计算小时数
+  time.value %= 3600; // 从总秒数中减去小时数
+  const minutes = Math.floor(time.value / 60); // 计算分钟数
+  const remainingSeconds = time.value % 60; // 从总秒数中减去分钟数
+
+  // 使用零填充（如果需要）
+  const paddedHours = hours.toString().padStart(2, '0');
+  const paddedMinutes = minutes.toString().padStart(2, '0');
+  const paddedSeconds = remainingSeconds.toString().padStart(2, '0');
+  return `${paddedHours}小时${paddedMinutes}分钟${paddedSeconds}秒`;
+})
+var timer
 const {userInfo, isLogin} = useUserLocal()
 const {formConfig} = useForm(drawconfig)
 const formRef = ref(null)
+const dataUrl = ref('')
 
 const upLoadModalShow = ref(false)
 const tips = ref([
@@ -60,33 +80,43 @@ const tips = ref([
   "1.上传作品之前需要你对自己的绘画过程进行简要的描述（重点可以是绘画心境，情绪等方面）",
   "2.完成作品和自我描述后，点击上传按钮，等待老师对你的提问，老师讲根据你的自我描述和你的回复来对你进行指导",
   "4.回复完成后，老师讲对你做出指导",
-  "5.上传作品后，后续的过程可在个人空间中进行",
+  "5.上传作品后，将收集你的绘画过程的视频数据",
+  "6.上传作品后，后续的过程可在个人空间中进行",
 ])
+
+function sendVideoUrl(url) {
+  clearInterval(timer)
+  // 获取canvas元素
+  let canvas = document.getElementById('draw-panel');
+  let base64Image = canvas.toDataURL('image/png');
+  dataUrl.value = url
+  let data = {
+    authorId: userInfo.userId,
+    paintingTime: paintingTime.value,
+    selfAssessment: formConfig.value.formState.selfAssessment,
+    paintingStatus: 1,
+    paintingImg: base64Image,
+    paintingVideo: url,
+  }
+  console.log("data", data)
+  $firstCommit(data).then(res => {
+    console.log("paintingres", res)
+    console.log("base64Video", dataUrl.value)
+    if (res.data >= 1) {
+      message.success("提交成功，可在个人空间中查看记录")
+      upLoadModalShow.value = false
+    } else {
+      message.warn("服务器出现错误，请稍后再试")
+    }
+  })
+}
 const upLoadPainting = () => {
   if (!isLogin) {
     message.error("同学，提交绘画作品前，请先登录")
     return
   }
   formRef.value.onValidate(() => {
-    // 获取canvas元素
-    let canvas = document.getElementById('draw-panel');
-    let base64Image = canvas.toDataURL('image/png');
-    let data = {
-      authorId: userInfo.userId,
-      paintingTime: '1小时30分钟',
-      selfAssessment: formConfig.value.formState.selfAssessment,
-      paintingStatus: 1,
-      paintingImg: base64Image
-    }
-    $firstCommit(data).then(res => {
-      console.log("paintingres", res)
-      if (res.data >= 1) {
-        message.success("提交成功，可在个人空间中查看记录")
-        upLoadModalShow.value = false
-      } else {
-        message.warn("服务器出现错误，请稍后再试")
-      }
-    })
+    cameraRecorderRef.value.recordOrStop()
     //   调取接口上传绘画历程
   }, () => {
     message.warn("同学，请先完成绘画过程的自我测评")
@@ -227,8 +257,8 @@ const toolItem = ref([
 
 const initCanvas = () => {
   let canvas = document.querySelector("#draw-panel")
-  canvas.width = document.documentElement.offsetWidth;
-  canvas.height = document.documentElement.offsetHeight;
+  canvas.width = document.documentElement.offsetWidth - 50;
+  canvas.height = document.documentElement.offsetHeight - 150;
   canvasCTX.value = canvas.getContext('2d')
 }
 // 允许下载为图片
@@ -315,6 +345,14 @@ watchEffect(() => {
   }
 })
 onMounted(() => {
+  if (!isLogin) {
+    message.error("同学，进行绘画前，请先登录")
+    return
+  }
+  timer = setInterval(() => {
+    time.value = time.value + 1
+  }, 1000)
+  cameraRecorderRef.value.recordOrStop()
   initCanvas()
 })
 </script>

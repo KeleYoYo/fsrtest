@@ -6,7 +6,8 @@
 
     <!--    <video controls autoplay muted style="width: 200px;height: 200px" :src="dataUrl"></video>-->
     <!-- 视频录制或暂停 -->
-    <div @click="recordOrStop">{{ isRecording ? '停止录制' : '视频录制' }}</div>
+    <!--    <div @click="recordOrStop">{{ isRecording ? '录制中' : '未开始' }}</div>-->
+    <div>{{ isRecording ? '录制中' : '未开始' }}</div>
   </div>
 </template>
 
@@ -14,7 +15,8 @@
 import {message} from 'ant-design-vue';
 
 export default {
-  setup() {
+  emits: ['sendVideoUrl'],
+  setup(props, {emit}) {
     const dataUrl = ref('')
     var mediaRecorder
     const videoRef = ref(null);
@@ -22,6 +24,7 @@ export default {
     const videoStream = ref(null);
     const recordedBlobs = ref([]);
     const isRecording = ref(false);
+
 
     const getCamera = async () => {
       if (!navigator.mediaDevices) {
@@ -106,13 +109,14 @@ export default {
       reader.onloadend = function () {
         const base64String = reader.result
         dataUrl.value = base64String
-        console.log("base64", base64String)
+        emit('sendVideoUrl', base64String)
       }
 
       console.log('videoUrl', videoUrl)
       document.getElementById('downLoadLink').href = videoUrl;
       document.getElementById('downLoadLink').download = 'media.mp4';
       document.getElementById('downLoadLink').click();
+      message.success("你的绘画记录视频已经自动保存到了本地，请注意查收")
       recordedBlobs.value = [];
     };
 
@@ -124,7 +128,7 @@ export default {
       videoRef,
       recordOrStop,
       isRecording,
-      dataUrl
+      dataUrl,
     };
   },
 };
@@ -140,14 +144,19 @@ export default {
   }
 
   div {
+    font-weight: bold;
+    cursor: pointer;
     position: absolute;
-    left: calc(50% - 80px);
+    left: 0;
     bottom: 0;
-    height: 40px;
-    width: 160px;
-    font-size: 14px;
+    height: 30px;
+    transform: translateX(50%);
+    width: 60px;
+    //border-radius: 50%;
     border-radius: 10px;
-    line-height: 40px;
+    font-size: 16px;
+    line-height: 30px;
+    //opacity: .5;
     background-color: rgb(25, 179, 179);
     text-align: center;
   }
