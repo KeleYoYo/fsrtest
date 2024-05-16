@@ -11,8 +11,17 @@ export const tableConfig = {
             }
         },
         {
+            title: '测评视频',
+            width: 200,
+            align: 'center',
+            field: 'paintingVideo',
+            slots: {
+                default: 'paintingVideo'
+            }
+        },
+        {
             title: '学生姓名',
-            width: 150,
+            width: 100,
             align: 'center',
             field: 'author.userNickName',
         },
@@ -24,7 +33,7 @@ export const tableConfig = {
         },
         {
             title: '学生年龄',
-            width: 150,
+            width: 120,
             align: 'center',
             field: 'author.userAge',
         },

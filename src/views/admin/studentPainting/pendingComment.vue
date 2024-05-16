@@ -78,6 +78,12 @@ function log(row) {
         <template #paintingImg="{row}">
           <img style="width: 150px;height: 150px" :src="row.paintingImg" alt=""/>
         </template>
+
+        <template #paintingVideo="{row}">
+          <video poster="/nodata.jpg" style="width: 180px;height: 180px" controls :src="row.paintingVideo">
+            您的浏览器不支持 video 标签。
+          </video>
+        </template>
         <template #action="{row}">
           <div>
             <a-button @click="showDetail(row)" type="link">给出测评</a-button>

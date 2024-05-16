@@ -16,6 +16,7 @@ const visibleDetail = ref(false)
 
 function getTableData() {
   $getPaintingList(0).then(res => {
+    console.log("res", res)
     tableState.gridOptions.data = res.data
   })
 }
@@ -71,6 +72,12 @@ onMounted(() => {
           <span style="color: #36ecdd" v-show="row.paintingStatus == 2">待学生回复问题</span>
           <span style="color: #f30558" v-show="row.paintingStatus == 3">待老师给出测评报告</span>
           <span style="color: #31f114" v-show="row.paintingStatus == 4">已完成测评</span>
+        </template>
+
+        <template #paintingVideo="{row}">
+          <video poster="/nodata.jpg" style="width: 180px;height: 180px" controls :src="row.paintingVideo">
+            您的浏览器不支持 video 标签。
+          </video>
         </template>
 
         <template #action="{row}">
