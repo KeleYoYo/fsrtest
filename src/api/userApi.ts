@@ -41,3 +41,11 @@ export function $editUser(user) {
         data: user
     })
 }
+
+export function $delUserByid(user) {
+    return service({
+        url: `/user/del`,
+        method: 'post',
+        data: user
+    })
+}
