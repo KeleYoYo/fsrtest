@@ -41,6 +41,7 @@ function confirmDel(row) {
     message.error("对不起你没有该权限")
     return
   }
+
   $delUserByid(currentRow.value).then(res => {
     if (res.code === 200) {
       message.success("删除成功")
