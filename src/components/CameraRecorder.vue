@@ -3,8 +3,10 @@
     <!-- 下载按钮 -->
     <a id="downLoadLink" style="display: none;"></a>
     <video ref="videoRef"></video>
+
+    <!--    <video controls autoplay muted style="width: 200px;height: 200px" :src="dataUrl"></video>-->
     <!-- 视频录制或暂停 -->
-    <!--    <div @click="recordOrStop">{{ isRecording ? '停止录制' : '视频录制' }}</div>-->
+    <div @click="recordOrStop">{{ isRecording ? '停止录制' : '视频录制' }}</div>
   </div>
 </template>
 
@@ -13,6 +15,7 @@ import {message} from 'ant-design-vue';
 
 export default {
   setup() {
+    const dataUrl = ref('')
     var mediaRecorder
     const videoRef = ref(null);
     const mediaStreamTrack = ref(null);
@@ -97,6 +100,16 @@ export default {
     const handleStopRecording = () => {
       const blob = new Blob(recordedBlobs.value, {type: 'video/mp4'});
       const videoUrl = URL.createObjectURL(blob);
+
+      const reader = new FileReader();
+      reader.readAsDataURL(blob)
+      reader.onloadend = function () {
+        const base64String = reader.result
+        dataUrl.value = base64String
+        console.log("base64", base64String)
+      }
+
+      console.log('videoUrl', videoUrl)
       document.getElementById('downLoadLink').href = videoUrl;
       document.getElementById('downLoadLink').download = 'media.mp4';
       document.getElementById('downLoadLink').click();
@@ -111,6 +124,7 @@ export default {
       videoRef,
       recordOrStop,
       isRecording,
+      dataUrl
     };
   },
 };
