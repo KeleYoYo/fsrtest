@@ -4,7 +4,7 @@
     <a id="downLoadLink" style="display: none;"></a>
     <video ref="videoRef"></video>
     <!-- 视频录制或暂停 -->
-    <div @click="recordOrStop">{{ isRecording ? '停止录制' : '视频录制' }}</div>
+    <!--    <div @click="recordOrStop">{{ isRecording ? '停止录制' : '视频录制' }}</div>-->
   </div>
 </template>
 
@@ -122,7 +122,7 @@ export default {
 
   video {
     width: 100%;
-    height: 100vh;
+    height: 100%;
   }
 
   div {

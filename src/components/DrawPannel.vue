@@ -32,6 +32,10 @@
         </CommonForm>
       </div>
     </a-modal>
+
+    <div class="vido-painting">
+      <CameraRecorder></CameraRecorder>
+    </div>
   </div>
 </template>
 
@@ -44,6 +48,7 @@ import CommonForm from "@/components/CommonForm.vue";
 import useForm from "@/hooks/useForm";
 import useUserLocal from "@/hooks/useUserLocal";
 import {$firstCommit} from "@/api/paintingApi.ts";
+import CameraRecorder from "@/components/CameraRecorder.vue";
 
 const {userInfo, isLogin} = useUserLocal()
 const {formConfig} = useForm(drawconfig)
@@ -319,6 +324,14 @@ onMounted(() => {
   //background-color: yellow;
   width: 100%;
   height: 800px;
+
+  .vido-painting {
+    position: fixed;
+    left: 20px;
+    top: 120px;
+    width: 150px;
+    height: 150px;
+  }
 }
 
 /*canvas画板*/

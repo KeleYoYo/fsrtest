@@ -1,14 +1,11 @@
-<script setup lang="ts">
-import CameraRecorder from "@/components/CameraRecorder.vue";
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div id="decode-app">
 <!--    <a-button type="primary">项目启动</a-button>-->
     <TabBar></TabBar>
     <div class="main">
-      <CameraRecorder></CameraRecorder>
-      <!--      <RouterView></RouterView>-->
+      <RouterView></RouterView>
     </div>
   </div>
 </template>
