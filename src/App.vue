@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import CameraRecorder from "@/components/CameraRecorder.vue";
 </script>
 
 <template>
@@ -6,7 +7,8 @@
 <!--    <a-button type="primary">项目启动</a-button>-->
     <TabBar></TabBar>
     <div class="main">
-      <RouterView></RouterView>
+      <CameraRecorder></CameraRecorder>
+      <!--      <RouterView></RouterView>-->
     </div>
   </div>
 </template>
@@ -25,7 +27,7 @@ body,html,#app{
   width: 100%;
   height: 100%;
   //background-color: yellow;
-  background: black;
+  //background: black;
   .main {
     height: 100%;
     padding: 120px 20px 0 20px;

@@ -20,6 +20,7 @@ declare module 'vue' {
     APopconfirm: typeof import('ant-design-vue/es')['Popconfirm']
     ASelect: typeof import('ant-design-vue/es')['Select']
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
+    CameraRecorder: typeof import('./src/components/CameraRecorder.vue')['default']
     CommonForm: typeof import('./src/components/CommonForm.vue')['default']
     CommonTable: typeof import('./src/components/table/CommonTable.vue')['default']
     Drag: typeof import('./src/components/Test/Drag.vue')['default']
