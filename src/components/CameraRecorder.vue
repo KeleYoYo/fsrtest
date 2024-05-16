@@ -13,6 +13,7 @@ import {message} from 'ant-design-vue';
 
 export default {
   setup() {
+    var mediaRecorder
     const videoRef = ref(null);
     const mediaStreamTrack = ref(null);
     const videoStream = ref(null);
@@ -43,12 +44,30 @@ export default {
       }
     };
 
-    const startRecording = () => {
+    const startRecording = async () => {
       isRecording.value = true;
-      const options = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
-          ? {mimeType: 'video/webm;codecs=vp9'}
-          : {mimeType: 'video/webm;codecs=h264'};
-      const mediaRecorder = new MediaRecorder(videoStream.value, options);
+
+      // 重新获取媒体流
+      const newStream = await navigator.mediaDevices.getUserMedia({video: true});
+
+      // 如果之前的流存在，则先停止其轨道
+      if (videoStream.value) {
+        const oldTracks = videoStream.value.getTracks();
+        oldTracks.forEach(track => track.stop());
+      }
+
+      // 更新videoStream引用
+      videoStream.value = newStream;
+      videoRef.value.srcObject = newStream;
+      videoRef.value.play();
+
+      // 重置MediaRecorder实例
+      mediaRecorder = new MediaRecorder(newStream, {
+        mimeType: MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
+            ? 'video/webm;codecs=vp9'
+            : 'video/webm;codecs=h264',
+      });
+
       mediaRecorder.start();
       mediaRecorder.ondataavailable = (e) => {
         if (e.data && e.data.size > 0) {
@@ -60,6 +79,9 @@ export default {
 
     const stopRecording = () => {
       isRecording.value = false;
+      // 添加以下两行代码以停止MediaRecorder实例
+      mediaRecorder.stop();
+      mediaRecorder = null; // 清除MediaRecorder实例
       if (mediaStreamTrack.value) {
         mediaStreamTrack.value.stop();
       }
