@@ -10,20 +10,8 @@ const menus = ref([
     path: 'login'
   },
   {
-    title: '文章',
-    path: 'article'
-  },
-  {
     title: '绘画板',
     path: 'writePanel'
-  },
-  {
-    title: '留言',
-    path: 'say'
-  },
-  {
-    title: '咨询',
-    path: 'question'
   },
   {
     title: '个人中心',

@@ -2,6 +2,9 @@
 import {AppstoreOutlined, SettingOutlined} from "@ant-design/icons-vue";
 import {h, ref} from "vue";
 import {useRouter} from "vue-router";
+import useUserLocal from "@/hooks/useUserLocal";
+
+const {} = useUserLocal(true, true)
 
 const router = useRouter()
 

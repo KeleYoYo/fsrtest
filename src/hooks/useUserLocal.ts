@@ -6,7 +6,7 @@ import {useRouter} from "vue-router";
  * @returns {userInfo,isLogin}
  * @param needTip 是否在挂载时就提示
  * */
-export default function useUserLocal(needTip = false) {
+export default function useUserLocal(needTip = false, admin = false) {
     const router = useRouter()
     var userInfo = '12'
     var isLogin = false
@@ -16,6 +16,12 @@ export default function useUserLocal(needTip = false) {
         if (user) {
             userInfo = user
             isLogin = true
+            if (admin) {
+                if (user.userRole != '2') {
+                    router.push({name: 'login'})
+                    message.error("只有管理员才能访问该页面")
+                }
+            }
             console.log("user", user)
         } else {
             if (needTip) {
